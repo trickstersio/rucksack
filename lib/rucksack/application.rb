@@ -71,6 +71,8 @@ module Rucksack
     end
 
     def rack_app
+      application = self
+
       klass = Class.new(Rucksack::Base) do
         set :protection, except: :json_csrf
 
@@ -91,9 +93,11 @@ module Rucksack
             pass
           end
 
-          execute_callbacks(:before_request, request)
-          route.handle(request, params)
-          execute_callbacks(:after_request, request)
+          application.execute_callbacks(:before_request, request)
+          response = route.handle(request, params)
+          application.execute_callbacks(:after_request, request)
+
+          response
         end
       end
 

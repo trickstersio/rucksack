@@ -32,7 +32,7 @@ module Rucksack
           @available_callback_kinds = superclass_available_callback_kinds + kinds
         end
 
-        def execute_callbacks(obj, kind, args)
+        def execute_callbacks(obj, kind, *args)
           unless available_callback_kinds.include?(kind)
             raise InvalidKindError, "Received invalid callback kind: #{kind}"
           end

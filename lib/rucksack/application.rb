@@ -93,9 +93,12 @@ module Rucksack
             pass
           end
 
-          application.execute_callbacks(:before_request, request)
-          response = route.handle(request, params)
-          application.execute_callbacks(:after_request, request)
+          begin
+            application.execute_callbacks(:before_request, request)
+            response = route.handle(request, params)
+          ensure
+            application.execute_callbacks(:after_request, request)
+          end
 
           response
         end

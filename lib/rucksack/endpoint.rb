@@ -25,7 +25,7 @@ module Rucksack
       # an error up if it was not rescued by any of previous
       # callbacks
 
-      raise e
+      raise
     end
 
     register_rescue_callback HaltError do |e|

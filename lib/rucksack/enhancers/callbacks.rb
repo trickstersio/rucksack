@@ -8,7 +8,7 @@ module Rucksack
       end
 
       def execute_callbacks(kind, *args)
-        self.class.execute_callbacks(self, kind, args)
+        self.class.execute_callbacks(self, kind, *args)
       end
 
       module ClassMethods

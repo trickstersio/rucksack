@@ -22,7 +22,12 @@ module Rucksack
         endpoint_instance.handle
         endpoint_instance.execute_callbacks(:after)
       rescue RuntimeError, StandardError => e
-        endpoint_instance.execute_callbacks(:rescue, e)
+        begin
+          endpoint_instance.execute_callbacks(:rescue, e)
+        rescue Endpoint::Halt
+          # Because halt can be used when rescue callback for an expection was found
+          # we should just stop here
+        end
       end
 
       endpoint_instance.response.to_a

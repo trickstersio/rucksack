@@ -1,6 +1,6 @@
 module Rucksack
   class Endpoint
-    class HaltError < StandardError; end
+    class Halt < StandardError; end
 
     include Rucksack::Enhancers::Callbacks
 
@@ -8,7 +8,9 @@ module Rucksack
 
     def self.register_rescue_callback(*exception_classes, &block)
       register_callback(:rescue) do |e|
-        self.instance_exec(e, &block) if exception_classes.any? { |exception_class|  e.is_a?(exception_class) }
+        if exception_classes.empty? || exception_classes.any? { |exception_class| e.is_a?(exception_class) }
+          self.instance_exec(e, &block)
+        end
       end
     end
 
@@ -20,16 +22,15 @@ module Rucksack
       register_callback(:after, &block)
     end
 
-    register_rescue_callback RuntimeError, StandardError do |e|
+    register_rescue_callback do |e|
       # This callback lives in the end of the chain and throws
       # an error up if it was not rescued by any of previous
       # callbacks
-
-      raise
+      raise e
     end
 
-    register_rescue_callback HaltError do |e|
-      # This callback swallows HaltError, so it'll not be raised up
+    register_rescue_callback Halt do |e|
+      # This callback swallows Halt, so it'll not be raised up
       # from the endpoint
     end
 
@@ -41,8 +42,9 @@ module Rucksack
       @response = Rucksack::Response.new(501, nil, nil)
     end
 
-    def halt!
-      raise Rucksack::Endpoint::HaltError
+    def halt!(status: 500, headers: {}, body: nil)
+      render(status: status, headers: headers, body: body)
+      raise Rucksack::Endpoint::Halt
     end
 
     def json(body)

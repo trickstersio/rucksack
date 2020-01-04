@@ -12,7 +12,7 @@ module Rucksack
       return {} if !rack_request.content_type == Rucksack::ContentTypes::JSON
 
       @json ||= body do |data|
-        JSON.parse(data, symbolize_names: false)
+        JSON.parse(data, symbolize_names: true)
       rescue JSON::ParserError
         {}
       end

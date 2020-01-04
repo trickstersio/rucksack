@@ -18,6 +18,10 @@ module Rucksack
       end
     end
 
+    def env
+      rack_request.env
+    end
+
     def body
       rack_request.body.rewind # in case someone already read it
       result = rack_request.body.read

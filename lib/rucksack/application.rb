@@ -76,7 +76,7 @@ module Rucksack
       klass = Class.new(Rucksack::Base) do
         set :protection, except: :json_csrf
 
-        configure :production, :development do
+        configure :development, :test, :production do
           enable :logging
         end
 

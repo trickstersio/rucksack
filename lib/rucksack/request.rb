@@ -5,7 +5,7 @@ module Rucksack
 
     def initialize(rack_request, params)
       @rack_request = rack_request
-      @params = params
+      @params = params.map { |k, v| [ k.to_sym, v ] }.to_h
     end
 
     def json

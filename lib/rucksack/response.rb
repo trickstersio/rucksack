@@ -8,6 +8,10 @@ module Rucksack
       @status = status
       @headers = headers
       @body = body
+
+      if !body.nil?
+        @headers[Rucksack::Headers::COTENT_TYPE] = body.content_type
+      end
     end
 
     def to_a

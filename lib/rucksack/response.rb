@@ -10,7 +10,7 @@ module Rucksack
       @body = body
 
       if !body.nil?
-        @headers[Rucksack::Headers::COTENT_TYPE] = body.content_type
+        @headers[Rucksack::Headers::CONTENT_TYPE] = body.content_type
       end
     end
 

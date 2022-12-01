@@ -33,5 +33,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rack", ">= 2.1.4"
   spec.add_dependency "zeitwerk", "~> 2.2"
-  spec.add_dependency "sinatra", "~> 2.0"
+  spec.add_dependency "sinatra", ">= 2", "< 4"
 end
